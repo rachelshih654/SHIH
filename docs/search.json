@@ -1,0 +1,191 @@
+[
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "台灣人海外旅遊分析\n\n\n\n\n\n根據交通部觀光局統計資料，以國人出境數據係以飛航到達首站為統計原則，統計其間為 202211-202411。\n\n\n\n\n\nFriday, the 17th of January, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\nNo matching items\n\n Back to top"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html",
+    "href": "posts/2025-01-07-python-containers/index.html",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "",
+    "text": "Code\nDescription\nRating\n\n\n\n\n0\nlist.append()\n新增元素到列表尾端\n⭐⭐⭐⭐⭐\n\n\n1\ndict['key']\n取得字典值\n⭐⭐⭐⭐⭐\n\n\n2\nlen()\n取得容器長度\n⭐⭐⭐⭐⭐\n\n\n3\nlist[index]\n索引存取\n⭐⭐⭐⭐⭐\n\n\n4\ndict.get()\n安全取得字典值\n⭐⭐⭐⭐\n\n\n5\nset.add()\n新增元素到集合\n⭐⭐⭐⭐\n\n\n6\nlist.extend()\n合併列表\n⭐⭐⭐\n\n\n7\ndict.items()\n取得鍵值對\n⭐⭐⭐\n\n\n8\nset.union()\n集合聯集\n⭐⭐⭐\n\n\n9\nlist.sort()\n排序列表\n⭐⭐⭐\n\n\n10\ndict.update()\n更新字典\n⭐⭐\n\n\n11\ntuple[index]\n存取元組元素\n⭐⭐\n\n\n12\nset.intersection()\n集合交集\n⭐⭐\n\n\n13\nlist.pop()\n移除並回傳元素\n⭐⭐\n\n\n14\ndict.keys()\n取得所有鍵\n⭐⭐"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#常用排行",
+    "href": "posts/2025-01-07-python-containers/index.html#常用排行",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "",
+    "text": "Code\nDescription\nRating\n\n\n\n\n0\nlist.append()\n新增元素到列表尾端\n⭐⭐⭐⭐⭐\n\n\n1\ndict['key']\n取得字典值\n⭐⭐⭐⭐⭐\n\n\n2\nlen()\n取得容器長度\n⭐⭐⭐⭐⭐\n\n\n3\nlist[index]\n索引存取\n⭐⭐⭐⭐⭐\n\n\n4\ndict.get()\n安全取得字典值\n⭐⭐⭐⭐\n\n\n5\nset.add()\n新增元素到集合\n⭐⭐⭐⭐\n\n\n6\nlist.extend()\n合併列表\n⭐⭐⭐\n\n\n7\ndict.items()\n取得鍵值對\n⭐⭐⭐\n\n\n8\nset.union()\n集合聯集\n⭐⭐⭐\n\n\n9\nlist.sort()\n排序列表\n⭐⭐⭐\n\n\n10\ndict.update()\n更新字典\n⭐⭐\n\n\n11\ntuple[index]\n存取元組元素\n⭐⭐\n\n\n12\nset.intersection()\n集合交集\n⭐⭐\n\n\n13\nlist.pop()\n移除並回傳元素\n⭐⭐\n\n\n14\ndict.keys()\n取得所有鍵\n⭐⭐"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#基本操作",
+    "href": "posts/2025-01-07-python-containers/index.html#基本操作",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "2 基本操作",
+    "text": "2 基本操作\n# 建立空容器\nempty_list = []\nempty_tuple = ()\nempty_set = set()\nempty_dict = {}\n\n# 取得容器長度\nlen(container)\n\n# 判斷元素是否存在\nelement in container\n\n# 容器轉換\nlist(tuple_or_set)  # 轉換為列表\ntuple(list_or_set)  # 轉換為元組\nset(list_or_tuple)  # 轉換為集合\n\n# 清空容器\ncontainer.clear()  # 適用於 list, set, dict"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#list-列表",
+    "href": "posts/2025-01-07-python-containers/index.html#list-列表",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "3 list 列表",
+    "text": "3 list 列表\n# 建立列表\nfruits = ['apple', 'banana', 'orange']\nnumbers = list(range(5))  # [0, 1, 2, 3, 4]\n\n# 存取元素\nfruits[0]      # 第一個元素\nfruits[-1]     # 最後一個元素\nfruits[1:3]    # 切片：第二到第三個元素\n\n# 修改元素\nfruits[0] = 'pear'\n\n# 新增元素\nfruits.append('grape')        # 新增到尾端\nfruits.insert(0, 'cherry')   # 指定位置新增\nfruits.extend(['kiwi', 'mango'])  # 合併列表\n\n# 刪除元素\nfruits.remove('banana')    # 刪除指定元素\nfruits.pop()              # 移除並回傳最後一個元素\nfruits.pop(0)             # 移除並回傳指定位置元素\ndel fruits[0]             # 刪除指定位置元素\n\n# 排序\nfruits.sort()             # 原地排序\nfruits.sort(reverse=True) # 反向排序\nsorted(fruits)            # 回傳新的排序列表\n\n# 其他操作\nfruits.index('apple')     # 取得元素索引\nfruits.count('apple')     # 計算元素出現次數\nfruits.reverse()          # 反轉列表"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#tuple-元組",
+    "href": "posts/2025-01-07-python-containers/index.html#tuple-元組",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "4 tuple 元組",
+    "text": "4 tuple 元組\n# 建立元組\ncoordinates = (3, 4)\nsingle_item = (1,)  # 單一元素要加逗號\n\n# 存取元素\ncoordinates[0]      # 第一個元素\ncoordinates[-1]     # 最後一個元素\ncoordinates[0:2]    # 切片\n\n# 元組解包\nx, y = coordinates\n\n# 常用操作\nlen(coordinates)    # 取得長度\n3 in coordinates    # 檢查元素是否存在\ncoordinates.count(3)  # 計算元素出現次數\ncoordinates.index(3)  # 取得元素索引\n\n# 元組串接\ncoordinates + (5, 6)  # 回傳新元組\ncoordinates * 2       # 重複元組"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#set-集合",
+    "href": "posts/2025-01-07-python-containers/index.html#set-集合",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "5 set 集合",
+    "text": "5 set 集合\n# 建立集合\nfruits = {'apple', 'banana', 'orange'}\nnumbers = set([1, 2, 3, 3])  # 重複元素會被移除\n\n# 新增與刪除\nfruits.add('grape')       # 新增元素\nfruits.remove('apple')    # 刪除元素（元素不存在會報錯）\nfruits.discard('apple')   # 安全刪除（元素不存在不會報錯）\nfruits.pop()             # 隨機移除並回傳一個元素\n\n# 集合運算\nset1 = {1, 2, 3}\nset2 = {3, 4, 5}\n\n# 聯集\nset1 | set2              # 運算子方式\nset1.union(set2)         # 方法方式\n\n# 交集\nset1 & set2              # 運算子方式\nset1.intersection(set2)   # 方法方式\n\n# 差集\nset1 - set2              # 運算子方式\nset1.difference(set2)     # 方法方式\n\n# 對稱差集\nset1 ^ set2              # 運算子方式\nset1.symmetric_difference(set2)  # 方法方式\n\n# 子集與超集\nset1 &lt;= set2             # 子集\nset1.issubset(set2)      # 子集\nset1 &gt;= set2             # 超集\nset1.issuperset(set2)    # 超集"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#dict-字典",
+    "href": "posts/2025-01-07-python-containers/index.html#dict-字典",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "6 dict 字典",
+    "text": "6 dict 字典\n# 建立字典\nperson = {\n    'name': 'John',\n    'age': 30,\n    'city': 'Taipei'\n}\n\n# 存取元素\nperson['name']           # 取得值（鍵不存在會報錯）\nperson.get('name')       # 安全取得值（鍵不存在回傳 None）\nperson.get('phone', 'N/A')  # 指定預設值\n\n# 修改與新增\nperson['age'] = 31       # 修改值\nperson['phone'] = '123'  # 新增鍵值對\n\n# 刪除\ndel person['age']        # 刪除鍵值對\nperson.pop('age')        # 移除並回傳值\nperson.popitem()         # 移除並回傳最後一個鍵值對\n\n# 字典方法\nperson.keys()            # 取得所有鍵\nperson.values()          # 取得所有值\nperson.items()           # 取得所有鍵值對\n\n# 更新字典\nperson.update({'age': 32, 'gender': 'M'})\n\n# 字典合併（Python 3.9+）\ndict1 = {'a': 1, 'b': 2}\ndict2 = {'c': 3, 'd': 4}\nmerged = dict1 | dict2   # 合併字典\n\n# 字典推導式\nsquares = {x: x**2 for x in range(5)}"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#容器比較",
+    "href": "posts/2025-01-07-python-containers/index.html#容器比較",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "7 容器比較",
+    "text": "7 容器比較\n\n\n\n特性\nlist\ntuple\nset\ndict\n\n\n\n\n可變性\n可變\n不可變\n可變\n可變\n\n\n有序性\n有序\n有序\n無序\n無序\n\n\n索引存取\n✓\n✓\n✗\n✗\n\n\n重複元素\n允許\n允許\n不允許\n不允許(鍵)\n\n\n主要用途\n序列操作\n不可變序列\n集合運算\n鍵值映射\n\n\n建立語法\n[]\n()\n{}\n{key:value}"
+  },
+  {
+    "objectID": "posts/2025-01-07-python-containers/index.html#使用建議",
+    "href": "posts/2025-01-07-python-containers/index.html#使用建議",
+    "title": "Python 容器: list, tuple, set, dict",
+    "section": "8 使用建議",
+    "text": "8 使用建議\n\nlist：\n\n需要經常修改內容時\n需要保持元素順序時\n允許重複元素時\n\ntuple：\n\n資料不應被修改時\n作為字典的鍵時\n需要較好的效能時\n\nset：\n\n需要去除重複元素時\n需要進行集合運算時\n需要快速成員檢查時\n\ndict：\n\n需要鍵值對映射時\n需要快速查找時\n需要儲存具有屬性的資料時"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Rachel SHIH",
+    "section": "",
+    "text": "我是一名數據分析師，專注於數據分析、數據可視化、多組學數據分析、長期追蹤數據分析、知識分享、學習新技能。"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Rachel SHIH",
+    "section": "Education",
+    "text": "Education\n\nM.Sc. in Statistics , 2023\nNational Taipei University, Taiwan\nB.Sc. in Mathematics , 2018\nFu Jen Catholic University"
+  },
+  {
+    "objectID": "index.html#interests",
+    "href": "index.html#interests",
+    "title": "Rachel SHIH",
+    "section": "Interests",
+    "text": "Interests\n\nData Analysis\nData Visualisation\nKnowledge Sharing\nLearning New Skills"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Python 容器: list, tuple, set, dict\n\n\n\n\n\n\nPython\n\n\nData Analysis\n\n\n\n整理 Python 的容器中 list, tuple, set, dict，常用的操作語法\n\n\n\n\n\nTuesday, the 7th of January, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\n\n\n\n\n\n\nPandas 常用語法整理\n\n\n\n\n\n\nPython\n\n\nPandas\n\n\nData Analysis\n\n\n\n整理 Python Pandas 常用的資料處理語法，包含讀取資料、基本操作、資料清理等\n\n\n\n\n\nFriday, the 3rd of January, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\nNo matching items\n\n Back to top"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html",
+    "href": "posts/2025-01-03-python-pandas/index.html",
+    "title": "Pandas 常用語法整理",
+    "section": "",
+    "text": "Code\nDescription\nRating\n\n\n\n\n0\ndf['column_name']\n選取單一欄位\n⭐⭐⭐⭐⭐\n\n\n1\ndf.head()\n查看前幾筆資料\n⭐⭐⭐⭐⭐\n\n\n2\npd.read_csv()\n讀取 CSV 檔案\n⭐⭐⭐⭐⭐\n\n\n3\ndf.info()\n查看資料基本資訊\n⭐⭐⭐⭐\n\n\n4\ndf.describe()\n查看數值統計摘要\n⭐⭐⭐⭐\n\n\n5\ndf.groupby()\n群組運算\n⭐⭐⭐⭐\n\n\n6\ndf.merge()\n合併資料表\n⭐⭐⭐⭐\n\n\n7\ndf.fillna()\n填補缺失值\n⭐⭐⭐\n\n\n8\ndf.sort_values()\n排序資料\n⭐⭐⭐\n\n\n9\ndf.drop_duplicates()\n刪除重複值\n⭐⭐⭐\n\n\n10\ndf.to_csv()\n匯出 CSV\n⭐⭐⭐\n\n\n11\npd.pivot_table()\n建立樞紐分析表\n⭐⭐\n\n\n12\ndf.astype()\n轉換資料型態\n⭐⭐\n\n\n13\ndf.resample()\n重新取樣時間序列\n⭐⭐\n\n\n14\ndf.str.contains()\n字串包含判斷\n⭐⭐"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#常用排行",
+    "href": "posts/2025-01-03-python-pandas/index.html#常用排行",
+    "title": "Pandas 常用語法整理",
+    "section": "",
+    "text": "Code\nDescription\nRating\n\n\n\n\n0\ndf['column_name']\n選取單一欄位\n⭐⭐⭐⭐⭐\n\n\n1\ndf.head()\n查看前幾筆資料\n⭐⭐⭐⭐⭐\n\n\n2\npd.read_csv()\n讀取 CSV 檔案\n⭐⭐⭐⭐⭐\n\n\n3\ndf.info()\n查看資料基本資訊\n⭐⭐⭐⭐\n\n\n4\ndf.describe()\n查看數值統計摘要\n⭐⭐⭐⭐\n\n\n5\ndf.groupby()\n群組運算\n⭐⭐⭐⭐\n\n\n6\ndf.merge()\n合併資料表\n⭐⭐⭐⭐\n\n\n7\ndf.fillna()\n填補缺失值\n⭐⭐⭐\n\n\n8\ndf.sort_values()\n排序資料\n⭐⭐⭐\n\n\n9\ndf.drop_duplicates()\n刪除重複值\n⭐⭐⭐\n\n\n10\ndf.to_csv()\n匯出 CSV\n⭐⭐⭐\n\n\n11\npd.pivot_table()\n建立樞紐分析表\n⭐⭐\n\n\n12\ndf.astype()\n轉換資料型態\n⭐⭐\n\n\n13\ndf.resample()\n重新取樣時間序列\n⭐⭐\n\n\n14\ndf.str.contains()\n字串包含判斷\n⭐⭐"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#讀取資料",
+    "href": "posts/2025-01-03-python-pandas/index.html#讀取資料",
+    "title": "Pandas 常用語法整理",
+    "section": "2 讀取資料",
+    "text": "2 讀取資料\nimport pandas as pd\n\n# 讀取 CSV 檔案\ndf = pd.read_csv('data.csv', encoding='utf-8', sep=',', header=0, index_col=None, usecols=None, nrows=None)\n'''\n常用參數：\n- encoding: 'utf-8', 'big5' 等編碼方式\n- sep: 分隔符號，預設為 ','\n- header: 標題列位置，預設為 0\n- index_col: 指定索引欄位\n- usecols: 指定要讀取的欄位\n- nrows: 指定要讀取的列數\n'''\n\n# 讀取 Excel 檔案\ndf = pd.read_excel('data.xlsx')\n'''\n常用參數：\n- sheet_name: 工作表名稱或索引\n- header: 標題列位置\n- usecols: 指定要讀取的欄位\n- skiprows: 跳過指定列數\n'''\n\n# 讀取 JSON 檔案\ndf = pd.read_json('data.json')\n'''\n常用參數：\n- orient: 資料格式，如 'records', 'split', 'index'\n- lines: 是否每行一筆資料\n- encoding: 編碼方式\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#基本資料查看",
+    "href": "posts/2025-01-03-python-pandas/index.html#基本資料查看",
+    "title": "Pandas 常用語法整理",
+    "section": "3 基本資料查看",
+    "text": "3 基本資料查看\n# 查看前幾筆資料\ndf.head()  # n: 要顯示的筆數，預設為 5\n\n# 查看資料基本資訊\ndf.info()\n'''\n常用參數：\n- verbose: 是否顯示完整資訊\n- show_counts: 是否顯示非空值計數\n- memory_usage: 是否顯示記憶體使用量\n'''\n\n# 查看數值欄位的統計摘要\ndf.describe()\n'''\n常用參數：\n- include: 要包含的資料類型，如 ['object'], [np.number]\n- percentiles: 要計算的百分位數\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#資料選取與過濾",
+    "href": "posts/2025-01-03-python-pandas/index.html#資料選取與過濾",
+    "title": "Pandas 常用語法整理",
+    "section": "4 資料選取與過濾",
+    "text": "4 資料選取與過濾\n# 選取單一欄位\ndf['column_name']\n\n# 選取多個欄位\ndf[['column1', 'column2']]\n\n# 條件過濾\ndf[df['age'] &gt; 25]\n\n# 多重條件過濾\ndf[(df['age'] &gt; 25) & (df['salary'] &gt; 50000)]\n\n# 使用 iloc 依照位置選取\ndf.iloc[0:5, 0:2]  # 選取前5列，前2欄\n\n# 使用 loc 依照標籤選取\ndf.loc['row_label', 'column_label']\n'''\nloc 常用用法：\n- df.loc[row_indexer, column_indexer]\n- df.loc['row_label']  # 選取單一列\n- df.loc[:, 'column_label']  # 選取單一欄\n- df.loc['start':'end']  # 選取範圍\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#資料處理與清理",
+    "href": "posts/2025-01-03-python-pandas/index.html#資料處理與清理",
+    "title": "Pandas 常用語法整理",
+    "section": "5 資料處理與清理",
+    "text": "5 資料處理與清理\n# 處理缺失值\ndf.isna()  # 檢查缺失值\ndf.fillna(0)  # 填補缺失值\ndf.dropna()  # 刪除含有缺失值的列\n'''\n常用參數：\n- axis: 0 刪除列, 1 刪除欄\n- how: 'any' 任一缺失則刪除, 'all' 全部缺失才刪除\n- subset: 指定要檢查的欄位\n'''\n\n# 重複值處理\ndf.duplicated()  # 檢查重複值\ndf.drop_duplicates()  # 刪除重複列\n\n# 重新命名欄位\ndf.rename(columns={'old_name': 'new_name'})\n\n# 資料型態轉換\ndf['column'].astype('int64')\n'''\n常用型態：\n- int64, float64: 數值型態\n- str, object: 字串型態\n- datetime64: 時間型態\n- category: 類別型態\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#資料運算與統計",
+    "href": "posts/2025-01-03-python-pandas/index.html#資料運算與統計",
+    "title": "Pandas 常用語法整理",
+    "section": "6 資料運算與統計",
+    "text": "6 資料運算與統計\n# 基本統計\ndf['column'].mean()  # 平均值\ndf['column'].median()  # 中位數\ndf['column'].mode()  # 眾數\ndf['column'].std()  # 標準差\n\n# 群組運算\ndf.groupby('category')['value'].mean()\n'''\n常用參數：\n- by: 分組依據，可使用多個欄位\n- as_index: 是否將分組欄位作為索引\n- observed: 是否只使用觀察到的類別\n'''\n\n# 排序\ndf.sort_values('column', ascending=False)\n'''\n常用參數：\n- by: 排序依據，可使用多個欄位\n- ascending: True 升序, False 降序\n- na_position: 'first' 或 'last'\n- inplace: 是否直接修改原資料\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#資料合併",
+    "href": "posts/2025-01-03-python-pandas/index.html#資料合併",
+    "title": "Pandas 常用語法整理",
+    "section": "7 資料合併",
+    "text": "7 資料合併\n# 合併兩個 DataFrame\npd.concat([df1, df2])  # 垂直合併\npd.concat([df1, df2], axis=1)  # 水平合併\n\n# 使用 merge 合併\npd.merge(df1, df2, on='key_column')\n'''\n常用參數：\n- how: 'inner', 'outer', 'left', 'right' 合併方式\n- on: 合併依據的欄位\n- left_on/right_on: 左右資料表合併依據的欄位\n- suffixes: 重複欄位的後綴\n'''\n\n# 垂直合併\npd.concat([df1, df2])\n'''\n常用參數：\n- axis: 0 垂直合併, 1 水平合併\n- ignore_index: 是否重新產生索引\n- join: 'inner' 或 'outer' 合併方式\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#資料匯出",
+    "href": "posts/2025-01-03-python-pandas/index.html#資料匯出",
+    "title": "Pandas 常用語法整理",
+    "section": "8 資料匯出",
+    "text": "8 資料匯出\n# 匯出成不同格式\ndf.to_csv('output.csv', index=False)\ndf.to_excel('output.xlsx')\ndf.to_json('output.json')"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#樞紐表",
+    "href": "posts/2025-01-03-python-pandas/index.html#樞紐表",
+    "title": "Pandas 常用語法整理",
+    "section": "9 樞紐表",
+    "text": "9 樞紐表\n# 樞紐表\npd.pivot_table(df, \n    values='value', \n    index='category1',\n    columns='category2', \n    aggfunc='mean'\n)\n'''\n常用參數：\n- values: 要計算的欄位\n- index: 列索引\n- columns: 欄索引\n- aggfunc: 計算方式，如 'mean', 'sum', 'count'\n- fill_value: 缺失值填補值\n- margins: 是否顯示總計\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#時間序列處理",
+    "href": "posts/2025-01-03-python-pandas/index.html#時間序列處理",
+    "title": "Pandas 常用語法整理",
+    "section": "10 時間序列處理",
+    "text": "10 時間序列處理\n# 時間序列處理\ndf['date'] = pd.to_datetime(df['date'])\n'''\n常用參數：\n- format: 時間格式，如 '%Y-%m-%d'\n- errors: 'raise', 'coerce', 'ignore'\n'''\n\ndf.set_index('date', inplace=True)\ndf.resample('M').mean()\n'''\n常用參數：\n- rule: 重新取樣頻率\n  - 'D': 日\n  - 'W': 週\n  - 'M': 月\n  - 'Q': 季\n  - 'Y': 年\n- on: 依據的時間欄位\n- closed: 區間閉合方式\n'''"
+  },
+  {
+    "objectID": "posts/2025-01-03-python-pandas/index.html#字串處理",
+    "href": "posts/2025-01-03-python-pandas/index.html#字串處理",
+    "title": "Pandas 常用語法整理",
+    "section": "11 字串處理",
+    "text": "11 字串處理\n# 字串處理\ndf['text'].str.contains('pattern')\n'''\n常用參數：\n- pat: 要搜尋的模式\n- case: 是否區分大小寫\n- regex: 是否使用正則表達式\n- na: 缺失值的處理方式\n'''\n\ndf['text'].str.replace('old', 'new')\n'''\n常用參數：\n- pat: 要替換的模式\n- repl: 替換後的字串\n- regex: 是否使用正則表達式\n- n: 替換次數\n'''"
+  },
+  {
+    "objectID": "projects/2025-01-17-taiwanese-overseas-destinations/index.html",
+    "href": "projects/2025-01-17-taiwanese-overseas-destinations/index.html",
+    "title": "台灣人海外旅遊分析",
+    "section": "",
+    "text": "報告背景：\n本報告分析了台灣旅客至海外各目的地的旅遊數據，涵蓋性別、年齡層及時間（按年月）等資訊，旨在挖掘旅遊趨勢、熱門目的地及潛在的市場機會。\n數據來源：\n\n\n\n  本數據來交通部觀光局的統計，包含 15,190 筆數據，涵蓋年份、月份、目的地、年齡群體與性別分佈。\n\n\n\n報告目標：\n\n確定旅遊目的地的趨勢與季節性。\n分析年齡層與性別的偏好。\n識別熱門目的地與潛在市場。\n\n\n\n數據概述\n\n數據範圍：\n\n\n\n\n\n\n\n\n\n\n\n指標\n數值\n範例資料\n\n\n\n\n時間範圍\n2022年01月 ~ 2024年11月\n\n\n\n涵蓋的目的地\n26\n亞洲地區_中國大陸, 亞洲地區_其他, 亞洲地區_新加坡, 亞洲地區_日本, 亞洲地區_泰國\n\n\n年齡群體\n7\n1-12Years, 13-19Years, 20-29Years, 30-39Years, 40-49Years\n\n\n性別\n男、女\n\n\n\n\n\n\n\n\n數據摘要：\n\n\n\n\n\n\n指標\n數值\n\n\n\n\n總旅遊次數\n28,801,955人次\n\n\n最熱門地區\n亞洲地區\n\n\n最冷門地區\n非洲地區\n\n\n最熱門目的地\n日本\n\n\n最熱門年齡群體\n40-49Years\n\n\n\n\n\n\n\n最新年度旅遊指標\n\n\n\n2024年01月 ~ 2024年11月 累計人次\n\n\n\n\n\n指標\n數值\n\n\n\n\n總旅遊次數\n15,523,300人次\n\n\n最熱門地區\n亞洲地區\n\n\n最熱門目的地\n日本\n\n\n最熱門年齡群體\n40-49Years\n\n\n與前一年同期比較\n44.55%\n\n\n\n\n\n\n\n最新月份旅遊指標\n\n\n\n2024年11月 累計人次\n\n\n\n\n\n指標\n數值\n\n\n\n\n總旅遊次數\n1,360,810人次\n\n\n最熱門地區\n亞洲地區\n\n\n最熱門目的地\n日本\n\n\n最熱門年齡群體\n60Years and Over\n\n\n與前一年同期比較\n24.05%\n\n\n與上月比較\n-3.49%\n\n\n\n\n\n\n\n\n\n分析內容\n\n旅遊趨勢分析\n\n整體旅遊量走勢：\n\n\n\n                                                \n\n\n\n匯總所有目的地的總旅遊量，檢查其是否具有明顯的季節性變化。\n\n\n                                                \n\n\n\n目的地旅遊量趨勢：\n\n\n\n                                                \n\n\n\n\n\n                                                \n\n\n\n\n\n年齡與性別分佈\n交叉分析年齡與性別的旅遊量，檢查是否存在差異。\n\n年齡分佈：\n性別分佈：\n通過圓餅圖，觀察男性與女性旅遊人數的比例差異，顯示出某些目的地更受特定性別青睞。\n\n\n\n目的地分析\n\n熱門目的地排行：\n通過長條圖顯示最熱門的前10大目的地，並分析其成因。\n\n\n\n                                                \n\n\n\n\n\n結論與建議\n\n\n\n\n Back to top"
+  }
+]
