@@ -1,0 +1,336 @@
+---
+title: "迴歸分析(Linear Regression)實例"
+description: ""
+date: "2025-07-31"
+jupyter: python3
+execute:
+    echo: false  # 是否顯示代碼
+format:
+  html:
+    code-fold: true
+    code-summary: "顯示／隱藏程式碼"
+    code-tools: true
+---
+
+```{python}
+# 下載套件
+# !python -m pip install scikit-learn
+# 載入套件
+import pandas as pd
+import numpy as np
+from IPython.display import Markdown
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+
+# 設定中文字體
+plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimHei', 'Arial Unicode MS']
+plt.rcParams['axes.unicode_minus'] = False  # 解決負號顯示問題
+```
+
+## 範例一：線性迴歸概念及scikit-learn 實作
+
+以動物體重與奔跑速度作為範例，使用 比較公式計算與scikit-learn 實作的結果
+
+::: {.columns}
+
+::: {.column style="width:45%; padding-right: 2rem;"}
+
+### 資料
+
+
+```{python}
+# 輸入資料
+raw_data_lm = [
+    ("犀牛", 1400, 45),
+    ("馬", 400, 70),
+    ("羚羊", 50, 100),
+    ("長頸鹿", 1000, 60),
+    ("斑馬", 300, 90),
+    ("獵豹", 60, 110),
+]
+
+# 轉為 DataFrame
+df_lm = pd.DataFrame(raw_data_lm, columns=['動物', '動物體重 (kg)', '最大奔跑速度 (km/h)'])
+
+Markdown(df_lm.to_markdown(index=False))
+
+```
+
+:::
+
+::: {.column style="width:55%; margin-left: auto; margin-right: 0;"}
+
+### 散點圖
+
+```{python}
+# | fig-width: 4
+# | fig-height: 3
+# | fig-align: center
+# | fig-format: svg
+# |
+plt.style.use("ggplot")
+plt.figure(figsize=(4, 3))
+plt.scatter(df_lm["動物體重 (kg)"], df_lm["最大奔跑速度 (km/h)"])
+plt.xlabel("動物體重 (kg)")
+plt.ylabel("最大奔跑速度 (km/h)")
+plt.title("動物體重與最大奔跑速度之間的散點圖")
+plt.show()
+```
+
+:::
+
+:::
+
+### 公式計算
+
+$$
+\begin{align}
+\hat{{\mathbf{\beta}}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}
+\end{align}
+$$
+
+```{python}
+# | echo: true
+
+# 依照公式 \hat{beta} = (X^T X)^{-1} X^T y 計算參數
+X_raw = df_lm["動物體重 (kg)"].to_numpy(dtype=float)
+y_vec = df_lm["最大奔跑速度 (km/h)"].to_numpy(dtype=float)
+
+# 設計矩陣：第一欄為截距(常數1)，第二欄為特徵 X
+X_design = np.column_stack([np.ones(len(X_raw)), X_raw])
+
+# 依公式計算參數向量 [a, b]
+beta_hat = np.linalg.inv(X_design.T @ X_design) @ (X_design.T @ y_vec)
+a, b = float(beta_hat[0]), float(beta_hat[1])
+
+print(f"公式計算得出的迴歸模型: y={b:.3f}x+{a:.3f}")
+
+```
+
+### scikit-learn 建立迴歸模型
+
+```{python}
+# | echo: true
+# 建立迴歸模型
+from sklearn.linear_model import LinearRegression
+
+# 特徵與目標（注意特徵需為 2D）
+features_X = df_lm[["動物體重 (kg)"]].values
+target_y = df_lm["最大奔跑速度 (km/h)"].values
+
+model = LinearRegression()
+
+# 訓練模型
+model.fit(features_X, target_y)
+
+print(f"scikit-learn 計算得出的迴歸模型: y={model.coef_[0].round(3)}x+{model.intercept_.round(3)}")
+
+```
+
+
+```{python}
+# 畫出散佈圖
+plt.scatter(features_X.flatten(), target_y, label="原始資料點")
+
+# 畫出回歸線
+x_range = np.linspace(features_X.min(), features_X.max(), 100).reshape(-1, 1)
+y_pred = model.predict(x_range)
+plt.plot(x_range, y_pred, label="線性迴歸線", linestyle="--")
+
+plt.xlabel("動物體重 (kg)")
+plt.ylabel("最大奔跑速度 (km/h)")
+plt.title("動物體重與奔跑速度的線性回歸")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+```
+
+### scikit-learn 預測
+
+```{python}
+# | echo: true
+# 預測
+x = 1000
+y = model.predict([[x]])
+
+print(f"預測 {x}kg 的動物最大奔跑速度為 {y[0].round(3)} km/h")
+```
+
+
+## 範例二：邏輯迴歸與線性迴歸的比較
+
+假設我們想預測學生是否會及格，資料如下，X軸代表每日學習時數，Y軸代表是否及格
+
+::: {.columns}
+
+::: {.column style="width:45%; padding-right: 2rem;"}
+
+
+### 資料
+
+```{python}
+# 1. 定義資料（學習時數 X 和 是否及格 Y）
+raw_data = [("A", 1, 0), 
+    ("B", 2, 1), 
+    ("C", 3, 0), 
+    ("D", 5, 0), 
+    ("E", 5, 1),
+    ("F", 8, 1),
+    ("G", 8, 1),
+    ("H", 8, 0),
+    ("I", 9, 1),
+    ("J", 10, 1),
+    ]
+
+# 轉為 DataFrame
+logistic_df = pd.DataFrame(raw_data, columns=["學生", "學習時數", "是否及格"])
+
+Markdown(logistic_df.to_markdown(index=False))
+```
+
+:::
+
+::: {.column style="width:55%; margin-left: auto; margin-right: 0;"}
+
+### 散點圖
+
+```{python}
+plt.style.use("ggplot")
+plt.figure(figsize=(4, 3))
+plt.scatter(logistic_df["學習時數"], logistic_df["是否及格"])
+plt.xlabel("學習時數")
+plt.ylabel("是否及格")
+plt.title("學習時數與是否及格之間的散點圖")
+plt.show()
+
+```
+
+:::
+
+:::
+
+上方的資料可以明顯看出，Y軸的值屬於二元變數，是離散型的。從散點圖中可以看出，學習時數與是否及格之間的關係並非線性。
+
+使用 scikit-learn 取得模型參數，並畫出 sigmoid 曲線，紅色點為原始資料，藍色點為經過 sigmoid 函數轉換後的值，藍色線為根據原始資料所作的線性迴歸，紅色線為 sigmoid 曲線。
+
+```{python}
+# | echo: true
+from sklearn.linear_model import LogisticRegression, LinearRegression
+
+X = logistic_df[["學習時數"]].values  # 特徵（輸入）
+Y = logistic_df["是否及格"].values  # 標籤（目標）
+
+
+# 2. 建立並訓練邏輯回歸模型
+model = LogisticRegression()
+model.fit(X, Y)
+
+# 3. 取得模型參數（截距和斜率）
+beta_0 = model.intercept_[0]
+beta_1 = model.coef_[0][0]
+
+print(f"σ(z)模型參數：beta_0 = {beta_0:.4f}, beta_1 = {beta_1:.4f}")
+
+
+# 4. 計算每個 X 對應的 z 和 sigmoid(z)
+z = beta_0 + beta_1 * X.flatten()
+
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+
+predicted_probabilities = sigmoid(z)
+
+# 顯示每筆資料的 z 與預測機率
+for i in range(len(X)):
+    print(f"X = {X[i][0]}, z = {z[i]:.4f}, σ(z) = {predicted_probabilities[i]:.4f}")
+
+# 5. 畫 sigmoid 曲線
+x_min, x_max = X.min() - 3, X.max() + 3
+x_range = np.linspace(x_min, x_max, 300)
+z_range = beta_0 + beta_1 * x_range
+sigmoid_curve = sigmoid(z_range)
+
+plt.style.use("ggplot")
+plt.figure(figsize=(7, 4))
+plt.plot(x_range, sigmoid_curve, label="Sigmoid Curve", linewidth=2)
+
+# 線性迴歸
+lin_model = LinearRegression()
+lin_model.fit(X, Y)
+lin_predictions = lin_model.predict(x_range.reshape(-1, 1))
+plt.plot(x_range, lin_predictions, label="線性迴歸", linestyle="--", linewidth=2)
+
+
+# 資料點
+plt.scatter(X, Y, color="red", label="Original Data (Y)", zorder=5)
+plt.scatter(
+    X,
+    predicted_probabilities,
+    color="blue",
+    label="Predicted Probabilities",
+    marker="x",
+    zorder=5,
+)
+plt.axhline(0.5, color="gray", linestyle="--", linewidth=1)
+plt.axhline(0, color="gray", linestyle="--", linewidth=0.5)
+plt.axhline(1, color="gray", linestyle="--", linewidth=0.5)
+plt.xlabel("X（學習時數）")
+plt.ylabel("Y=1 的機率")
+plt.title("邏輯迴歸：Sigmoid 曲線與機率")
+plt.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0))
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+```
+
+s型曲線更能展現出此資料分布的特性，而線性迴歸則無法。並且邏輯迴歸的預測值永遠介於 0~1，代表「Y=1 的機率」，而線性迴歸的預測值可以小於 0 或大於 1，沒有機率意義。
+
+### 預測
+
+
+```{python}
+# | echo: true
+# 預測
+x_new = np.array([[0], [3],[4.5], [6], [15]])
+y_logistic = model.predict_proba(x_new)[:, 1]
+y_linear = lin_model.predict(x_new)
+
+# 建立 DataFrame 表格
+df_pred = pd.DataFrame(
+    {
+        "學習時數": x_new.flatten(),
+        "邏輯回歸預測機率 (P=1)": y_logistic.round(3),
+        "線性回歸預測值": y_linear.round(3),
+    }
+)
+
+# 顯示表格
+Markdown(df_pred.to_markdown(index=False))
+```
+
+
+- **邏輯回歸預測值**：永遠介於 0~1，代表「Y=1 的機率」
+- **線性回歸預測值**：可以小於 0 或大於 1，沒有機率意義
+
+## 範例三：線性迴歸的實際應用
+
+
+
+
+
+
+
+## 範例四:邏輯迴歸的實際應用
+
+
+
+
+
+
+
+

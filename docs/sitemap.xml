@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>/projects.html</loc>
-    <lastmod>2025-01-22T12:05:38.000Z</lastmod>
+    <lastmod>2025-02-28T03:11:12.585Z</lastmod>
   </url>
   <url>
     <loc>/posts/2025-01-07-python-containers/index.html</loc>
-    <lastmod>2025-01-22T12:05:38.000Z</lastmod>
+    <lastmod>2025-02-28T03:11:12.583Z</lastmod>
   </url>
   <url>
     <loc>/index.html</loc>
-    <lastmod>2025-02-15T14:19:27.636Z</lastmod>
+    <lastmod>2025-02-28T03:11:12.579Z</lastmod>
   </url>
   <url>
     <loc>/blog.html</loc>
-    <lastmod>2025-01-22T12:05:38.000Z</lastmod>
+    <lastmod>2025-02-28T03:11:12.509Z</lastmod>
   </url>
   <url>
     <loc>/posts/2025-01-03-python-pandas/index.html</loc>
-    <lastmod>2025-01-22T12:05:38.000Z</lastmod>
+    <lastmod>2025-02-28T03:11:12.581Z</lastmod>
   </url>
   <url>
     <loc>/projects/2025-01-17-taiwanese-overseas-destinations/index.html</loc>
-    <lastmod>2025-02-15T14:52:03.745Z</lastmod>
+    <lastmod>2025-02-28T03:11:12.588Z</lastmod>
   </url>
   <url>
     <loc>/demo.html</loc>
     <lastmod>2025-02-15T14:51:38.710Z</lastmod>
+  </url>
+  <url>
+    <loc>/projects/2025-07-31-linear-regression/index.html</loc>
+    <lastmod>2025-08-08T08:08:36.779Z</lastmod>
   </url>
 </urlset>
