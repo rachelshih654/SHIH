@@ -1,5 +1,5 @@
 ---
-title: "迴歸分析(Linear Regression)實例"
+title: "迴歸分析實例"
 description: ""
 date: "2025-07-31"
 jupyter: python3
@@ -21,7 +21,7 @@ import numpy as np
 from IPython.display import Markdown
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-
+import seaborn as sns       
 
 # 設定中文字體
 plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimHei', 'Arial Unicode MS']
@@ -75,6 +75,11 @@ plt.scatter(df_lm["動物體重 (kg)"], df_lm["最大奔跑速度 (km/h)"])
 plt.xlabel("動物體重 (kg)")
 plt.ylabel("最大奔跑速度 (km/h)")
 plt.title("動物體重與最大奔跑速度之間的散點圖")
+# 在每個散點旁標註座標
+ax = plt.gca()
+for x, y in zip(df_lm["動物體重 (kg)"].values, df_lm["最大奔跑速度 (km/h)"].values):
+    ax.annotate(f"({x:.0f}, {y:.0f})", (x, y),
+        textcoords="offset points", xytext=(5, 5), fontsize=8)
 plt.show()
 ```
 
@@ -138,6 +143,24 @@ x_range = np.linspace(features_X.min(), features_X.max(), 100).reshape(-1, 1)
 y_pred = model.predict(x_range)
 plt.plot(x_range, y_pred, label="線性迴歸線", linestyle="--")
 
+# 垂直於回歸線的距離（幾何最短距離）
+ax = plt.gca()
+m = float(np.ravel(model.coef_)[0])
+b0 = float(np.ravel(model.intercept_))
+for x, y in zip(features_X.ravel(), target_y.ravel()):
+    xp = (x + m * (y - b0)) / (m * m + 1)
+    yp = m * xp + b0
+    ax.plot([x, xp], [y, yp], color="purple", linestyle="--", linewidth=1)
+    d = abs(m * x - y + b0) / np.sqrt(m * m + 1)
+    ax.annotate(
+        f"{d:.2f}",
+        ((x + xp) / 2, (y + yp) / 2),
+        textcoords="offset points",
+        xytext=(5, 0),
+        color="purple",
+        fontsize=8,
+    )
+
 plt.xlabel("動物體重 (kg)")
 plt.ylabel("最大奔跑速度 (km/h)")
 plt.title("動物體重與奔跑速度的線性回歸")
@@ -147,17 +170,20 @@ plt.show()
 
 ```
 
-### scikit-learn 預測
+### 預測
 
 ```{python}
 # | echo: true
 # 預測
 x = 1000
-y = model.predict([[x]])
+sklearn_y = model.predict([[x]])
+formula_y = a + b * x
 
-print(f"預測 {x}kg 的動物最大奔跑速度為 {y[0].round(3)} km/h")
+print(f"預測 {x}kg 的動物最大奔跑速度，scikit-learn 預測值為 {sklearn_y[0].round(3)} km/h，公式計算得出的預測值為 {formula_y:.3f} km/h")
 ```
 
+
+可知，scikit-learn 與公式計算得出的預測值相同，原因是 scikit-learn 在背後也是使用公式計算的。
 
 ## 範例二：邏輯迴歸與線性迴歸的比較
 
@@ -317,10 +343,129 @@ Markdown(df_pred.to_markdown(index=False))
 - **邏輯回歸預測值**：永遠介於 0~1，代表「Y=1 的機率」
 - **線性回歸預測值**：可以小於 0 或大於 1，沒有機率意義
 
-## 範例三：線性迴歸的實際應用
+## 範例三：kaggle 5050 家新創企業數據，線性迴歸的實際應用
+
+資料來源：https://www.kaggle.com/datasets/amineoumous/50-startups-data
+
+資料內容：50 家新創企業的資料，包括 「研發支出」、「管理」、「行銷支出」、「所在州」、「利潤」。前 3 列表示每家新創公司在研發、行銷和管理方面的支出；所在州列表示新創公司位於哪個州；最後一列表示新創公司的利潤。
+
+### 資料概述
+
+```{python}
+# 載入資料
+startups_df = pd.read_csv("50_Startups.csv")
+# 筆數、欄位數
+print(f"筆數：{startups_df.shape[0]}，欄位數：{startups_df.shape[1]}")
+
+# 欄位名稱與資料型態
+print(startups_df.dtypes)
+
+# 資料概述
+print(startups_df.describe())
+
+# 類別資料統計
+print("State 的類別資料統計")
+print(startups_df["State"].value_counts())
+
+# 轉成 one-hot encoding，改成0、1編碼
+startups_df_onehot = pd.get_dummies(startups_df, columns=["State"], drop_first=True, dtype=int)
+
+# 印出前五筆資料
+print(startups_df_onehot.head(5).to_markdown(index=False))
+
+```
+
+### 探索分析(Exploratory Data Analysis, EDA)
+
+```{python}
+# | echo: true
 
 
+# Profit 分布
+plt.figure(figsize=(7, 4))
+sns.histplot(startups_df["Profit"], bins=30, kde=True)
+plt.title("Profit 分布")
+plt.show()
 
+# 各支出與 Profit 的關係（散點圖 + 相關係數熱力圖）
+fig, axes = plt.subplots(2, 2, figsize=(7, 4))
+
+# R&D Spend vs Profit
+sns.scatterplot(
+    ax=axes[0, 0],
+    x="R&D Spend",
+    y="Profit",
+    data=startups_df,
+    hue="State",
+    legend=False,
+)
+axes[0, 0].set_title("R&D Spend 與 Profit 的關係")
+
+# Marketing Spend vs Profit
+sns.scatterplot(
+    ax=axes[0, 1],
+    x="Marketing Spend",
+    y="Profit",
+    data=startups_df,
+    hue="State",
+    legend=False,
+)
+axes[0, 1].set_title("Marketing Spend 與 Profit 的關係")
+
+# Administration vs Profit
+sns.scatterplot(
+    ax=axes[1, 0],
+    x="Administration",
+    y="Profit",
+    data=startups_df,
+    hue="State",
+    legend=False,
+)
+axes[1, 0].set_title("Administration 與 Profit 的關係")
+
+# 共用圖例，設定圖例位置
+handles, labels = axes[0, 0].get_legend_handles_labels()
+fig.legend(handles, labels, loc="upper right", bbox_to_anchor=(1.02, 1.0))
+
+
+plt.tight_layout()
+plt.show()
+
+# 相關係數熱力圖
+sns.heatmap(
+    startups_df[["R&D Spend", "Marketing Spend", "Administration", "Profit"]].corr(),
+    annot=True,
+    cmap="coolwarm",
+    linewidths=0.5,
+    mask=np.triu(
+        np.ones_like(
+            startups_df[
+                ["R&D Spend", "Marketing Spend", "Administration", "Profit"]
+            ].corr(),
+            dtype=bool,
+        )
+    ),
+)
+plt.title("相關係數熱力圖")
+plt.show()
+
+```
+
+
+可以看出，R&D Spend 與 Profit 的關係最強，Administration 與 Profit 的關係最弱。
+
+### 模型分析    
+
+```{python}
+# | echo: true
+# 方法：多元線性迴歸（OLS）
+
+# 重要變數：影響大小 + 顯著性（可用顯著性標記圖）
+
+# 模型評估（R²、調整後 R²、RMSE）
+```
+
+### 結論與建議
 
 
 

@@ -4,7 +4,7 @@
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "迴歸分析(Linear Regression)實例\n\n\n\n\n\n\n\n\n\n\n\nThursday, the 31st of July, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\n\n\n\n\n\n\n台灣人海外旅遊分析\n\n\n\n\n\n根據交通部觀光局統計資料，以國人出境數據係以飛航到達首站為統計原則，統計其間為 202201-202411。\n\n\n\n\n\nFriday, the 17th of January, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\nNo matching items\n\n Back to top"
+    "text": "迴歸分析實例\n\n\n\n\n\n\n\n\n\n\n\nThursday, the 31st of July, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\n\n\n\n\n\n\n台灣人海外旅遊分析\n\n\n\n\n\n根據交通部觀光局統計資料，以國人出境數據係以飛航到達首站為統計原則，統計其間為 202201-202411。\n\n\n\n\n\nFriday, the 17th of January, 2025\n\n\nRachel SHIH\n\n\n\n\n\n\nNo matching items\n\n Back to top"
   },
   {
     "objectID": "posts/2025-01-07-python-containers/index.html",
@@ -243,5 +243,47 @@
     "title": "迴歸分析(Linear Regression)實例",
     "section": "範例四:邏輯迴歸的實際應用",
     "text": "範例四:邏輯迴歸的實際應用"
+  },
+  {
+    "objectID": "projects/2025-07-31-regression-sample/index.html",
+    "href": "projects/2025-07-31-regression-sample/index.html",
+    "title": "迴歸分析實例",
+    "section": "",
+    "text": "以動物體重與奔跑速度作為範例，使用 比較公式計算與scikit-learn 實作的結果\n\n\n\n\n\n\n\n\n\n動物\n動物體重 (kg)\n最大奔跑速度 (km/h)\n\n\n\n\n犀牛\n1400\n45\n\n\n馬\n400\n70\n\n\n羚羊\n50\n100\n\n\n長頸鹿\n1000\n60\n\n\n斑馬\n300\n90\n\n\n獵豹\n60\n110\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\[\n\\begin{align}\n\\hat{{\\mathbf{\\beta}}} = (\\mathbf{X}^\\top \\mathbf{X})^{-1} \\mathbf{X}^\\top \\mathbf{y}\n\\end{align}\n\\]\n\n\n顯示／隱藏程式碼\n# 依照公式 \\hat{beta} = (X^T X)^{-1} X^T y 計算參數\nX_raw = df_lm[\"動物體重 (kg)\"].to_numpy(dtype=float)\ny_vec = df_lm[\"最大奔跑速度 (km/h)\"].to_numpy(dtype=float)\n\n# 設計矩陣：第一欄為截距(常數1)，第二欄為特徵 X\nX_design = np.column_stack([np.ones(len(X_raw)), X_raw])\n\n# 依公式計算參數向量 [a, b]\nbeta_hat = np.linalg.inv(X_design.T @ X_design) @ (X_design.T @ y_vec)\na, b = float(beta_hat[0]), float(beta_hat[1])\n\nprint(f\"公式計算得出的迴歸模型: y={b:.3f}x+{a:.3f}\")\n\n\n公式計算得出的迴歸模型: y=-0.043x+102.200\n\n\n\n\n\n\n\n顯示／隱藏程式碼\n# 建立迴歸模型\nfrom sklearn.linear_model import LinearRegression\n\n# 特徵與目標（注意特徵需為 2D）\nfeatures_X = df_lm[[\"動物體重 (kg)\"]].values\ntarget_y = df_lm[\"最大奔跑速度 (km/h)\"].values\n\nmodel = LinearRegression()\n\n# 訓練模型\nmodel.fit(features_X, target_y)\n\nprint(f\"scikit-learn 計算得出的迴歸模型: y={model.coef_[0].round(3)}x+{model.intercept_.round(3)}\")\n\n\nscikit-learn 計算得出的迴歸模型: y=-0.043x+102.2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n顯示／隱藏程式碼\n# 預測\nx = 1000\nsklearn_y = model.predict([[x]])\nformula_y = a + b * x\n\nprint(f\"預測 {x}kg 的動物最大奔跑速度，scikit-learn 預測值為 {sklearn_y[0].round(3)} km/h，公式計算得出的預測值為 {formula_y:.3f} km/h\")\n\n\n預測 1000kg 的動物最大奔跑速度，scikit-learn 預測值為 59.147 km/h，公式計算得出的預測值為 59.147 km/h\n\n\n可知，scikit-learn 與公式計算得出的預測值相同，原因是 scikit-learn 在背後也是使用公式計算的。"
+  },
+  {
+    "objectID": "projects/2025-07-31-regression-sample/index.html#範例一線性迴歸概念及scikit-learn-實作",
+    "href": "projects/2025-07-31-regression-sample/index.html#範例一線性迴歸概念及scikit-learn-實作",
+    "title": "迴歸分析實例",
+    "section": "",
+    "text": "以動物體重與奔跑速度作為範例，使用 比較公式計算與scikit-learn 實作的結果\n\n\n\n\n\n\n\n\n\n動物\n動物體重 (kg)\n最大奔跑速度 (km/h)\n\n\n\n\n犀牛\n1400\n45\n\n\n馬\n400\n70\n\n\n羚羊\n50\n100\n\n\n長頸鹿\n1000\n60\n\n\n斑馬\n300\n90\n\n\n獵豹\n60\n110\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\[\n\\begin{align}\n\\hat{{\\mathbf{\\beta}}} = (\\mathbf{X}^\\top \\mathbf{X})^{-1} \\mathbf{X}^\\top \\mathbf{y}\n\\end{align}\n\\]\n\n\n顯示／隱藏程式碼\n# 依照公式 \\hat{beta} = (X^T X)^{-1} X^T y 計算參數\nX_raw = df_lm[\"動物體重 (kg)\"].to_numpy(dtype=float)\ny_vec = df_lm[\"最大奔跑速度 (km/h)\"].to_numpy(dtype=float)\n\n# 設計矩陣：第一欄為截距(常數1)，第二欄為特徵 X\nX_design = np.column_stack([np.ones(len(X_raw)), X_raw])\n\n# 依公式計算參數向量 [a, b]\nbeta_hat = np.linalg.inv(X_design.T @ X_design) @ (X_design.T @ y_vec)\na, b = float(beta_hat[0]), float(beta_hat[1])\n\nprint(f\"公式計算得出的迴歸模型: y={b:.3f}x+{a:.3f}\")\n\n\n公式計算得出的迴歸模型: y=-0.043x+102.200\n\n\n\n\n\n\n\n顯示／隱藏程式碼\n# 建立迴歸模型\nfrom sklearn.linear_model import LinearRegression\n\n# 特徵與目標（注意特徵需為 2D）\nfeatures_X = df_lm[[\"動物體重 (kg)\"]].values\ntarget_y = df_lm[\"最大奔跑速度 (km/h)\"].values\n\nmodel = LinearRegression()\n\n# 訓練模型\nmodel.fit(features_X, target_y)\n\nprint(f\"scikit-learn 計算得出的迴歸模型: y={model.coef_[0].round(3)}x+{model.intercept_.round(3)}\")\n\n\nscikit-learn 計算得出的迴歸模型: y=-0.043x+102.2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n顯示／隱藏程式碼\n# 預測\nx = 1000\nsklearn_y = model.predict([[x]])\nformula_y = a + b * x\n\nprint(f\"預測 {x}kg 的動物最大奔跑速度，scikit-learn 預測值為 {sklearn_y[0].round(3)} km/h，公式計算得出的預測值為 {formula_y:.3f} km/h\")\n\n\n預測 1000kg 的動物最大奔跑速度，scikit-learn 預測值為 59.147 km/h，公式計算得出的預測值為 59.147 km/h\n\n\n可知，scikit-learn 與公式計算得出的預測值相同，原因是 scikit-learn 在背後也是使用公式計算的。"
+  },
+  {
+    "objectID": "projects/2025-07-31-regression-sample/index.html#範例二邏輯迴歸與線性迴歸的比較",
+    "href": "projects/2025-07-31-regression-sample/index.html#範例二邏輯迴歸與線性迴歸的比較",
+    "title": "迴歸分析實例",
+    "section": "範例二：邏輯迴歸與線性迴歸的比較",
+    "text": "範例二：邏輯迴歸與線性迴歸的比較\n假設我們想預測學生是否會及格，資料如下，X軸代表每日學習時數，Y軸代表是否及格\n\n\n\n資料\n\n\n\n\n\n學生\n學習時數\n是否及格\n\n\n\n\nA\n1\n0\n\n\nB\n2\n1\n\n\nC\n3\n0\n\n\nD\n5\n0\n\n\nE\n5\n1\n\n\nF\n8\n1\n\n\nG\n8\n1\n\n\nH\n8\n0\n\n\nI\n9\n1\n\n\nJ\n10\n1\n\n\n\n\n\n\n\n\n散點圖\n\n\n\n\n\n\n\n\n\n\n\n\n上方的資料可以明顯看出，Y軸的值屬於二元變數，是離散型的。從散點圖中可以看出，學習時數與是否及格之間的關係並非線性。\n使用 scikit-learn 取得模型參數，並畫出 sigmoid 曲線，紅色點為原始資料，藍色點為經過 sigmoid 函數轉換後的值，藍色線為根據原始資料所作的線性迴歸，紅色線為 sigmoid 曲線。\n\n\n顯示／隱藏程式碼\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\n\nX = logistic_df[[\"學習時數\"]].values  # 特徵（輸入）\nY = logistic_df[\"是否及格\"].values  # 標籤（目標）\n\n\n# 2. 建立並訓練邏輯回歸模型\nmodel = LogisticRegression()\nmodel.fit(X, Y)\n\n# 3. 取得模型參數（截距和斜率）\nbeta_0 = model.intercept_[0]\nbeta_1 = model.coef_[0][0]\n\nprint(f\"σ(z)模型參數：beta_0 = {beta_0:.4f}, beta_1 = {beta_1:.4f}\")\n\n\n# 4. 計算每個 X 對應的 z 和 sigmoid(z)\nz = beta_0 + beta_1 * X.flatten()\n\n\ndef sigmoid(z):\n    return 1 / (1 + np.exp(-z))\n\n\npredicted_probabilities = sigmoid(z)\n\n# 顯示每筆資料的 z 與預測機率\nfor i in range(len(X)):\n    print(f\"X = {X[i][0]}, z = {z[i]:.4f}, σ(z) = {predicted_probabilities[i]:.4f}\")\n\n# 5. 畫 sigmoid 曲線\nx_min, x_max = X.min() - 3, X.max() + 3\nx_range = np.linspace(x_min, x_max, 300)\nz_range = beta_0 + beta_1 * x_range\nsigmoid_curve = sigmoid(z_range)\n\nplt.style.use(\"ggplot\")\nplt.figure(figsize=(7, 4))\nplt.plot(x_range, sigmoid_curve, label=\"Sigmoid Curve\", linewidth=2)\n\n# 線性迴歸\nlin_model = LinearRegression()\nlin_model.fit(X, Y)\nlin_predictions = lin_model.predict(x_range.reshape(-1, 1))\nplt.plot(x_range, lin_predictions, label=\"線性迴歸\", linestyle=\"--\", linewidth=2)\n\n\n# 資料點\nplt.scatter(X, Y, color=\"red\", label=\"Original Data (Y)\", zorder=5)\nplt.scatter(\n    X,\n    predicted_probabilities,\n    color=\"blue\",\n    label=\"Predicted Probabilities\",\n    marker=\"x\",\n    zorder=5,\n)\nplt.axhline(0.5, color=\"gray\", linestyle=\"--\", linewidth=1)\nplt.axhline(0, color=\"gray\", linestyle=\"--\", linewidth=0.5)\nplt.axhline(1, color=\"gray\", linestyle=\"--\", linewidth=0.5)\nplt.xlabel(\"X（學習時數）\")\nplt.ylabel(\"Y=1 的機率\")\nplt.title(\"邏輯迴歸：Sigmoid 曲線與機率\")\nplt.legend(loc=\"upper left\", bbox_to_anchor=(1.02, 1.0))\nplt.grid(True)\nplt.tight_layout()\nplt.show()\n\n\nσ(z)模型參數：beta_0 = -1.4243, beta_1 = 0.3225\nX = 1, z = -1.1017, σ(z) = 0.2494\nX = 2, z = -0.7792, σ(z) = 0.3145\nX = 3, z = -0.4567, σ(z) = 0.3878\nX = 5, z = 0.1884, σ(z) = 0.5470\nX = 5, z = 0.1884, σ(z) = 0.5470\nX = 8, z = 1.1560, σ(z) = 0.7606\nX = 8, z = 1.1560, σ(z) = 0.7606\nX = 8, z = 1.1560, σ(z) = 0.7606\nX = 9, z = 1.4785, σ(z) = 0.8143\nX = 10, z = 1.8010, σ(z) = 0.8583\n\n\n\n\n\n\n\n\n\ns型曲線更能展現出此資料分布的特性，而線性迴歸則無法。並且邏輯迴歸的預測值永遠介於 0~1，代表「Y=1 的機率」，而線性迴歸的預測值可以小於 0 或大於 1，沒有機率意義。\n\n預測\n\n\n顯示／隱藏程式碼\n# 預測\nx_new = np.array([[0], [3],[4.5], [6], [15]])\ny_logistic = model.predict_proba(x_new)[:, 1]\ny_linear = lin_model.predict(x_new)\n\n# 建立 DataFrame 表格\ndf_pred = pd.DataFrame(\n    {\n        \"學習時數\": x_new.flatten(),\n        \"邏輯回歸預測機率 (P=1)\": y_logistic.round(3),\n        \"線性回歸預測值\": y_linear.round(3),\n    }\n)\n\n# 顯示表格\nMarkdown(df_pred.to_markdown(index=False))\n\n\n\n\n\n學習時數\n邏輯回歸預測機率 (P=1)\n線性回歸預測值\n\n\n\n\n0\n0.194\n0.162\n\n\n3\n0.388\n0.385\n\n\n4.5\n0.507\n0.496\n\n\n6\n0.625\n0.607\n\n\n15\n0.968\n1.276\n\n\n\n\n\n\n邏輯回歸預測值：永遠介於 0~1，代表「Y=1 的機率」\n線性回歸預測值：可以小於 0 或大於 1，沒有機率意義"
+  },
+  {
+    "objectID": "projects/2025-07-31-regression-sample/index.html#範例三線性迴歸的實際應用",
+    "href": "projects/2025-07-31-regression-sample/index.html#範例三線性迴歸的實際應用",
+    "title": "迴歸分析(Linear Regression)實例",
+    "section": "範例三：線性迴歸的實際應用",
+    "text": "範例三：線性迴歸的實際應用"
+  },
+  {
+    "objectID": "projects/2025-07-31-regression-sample/index.html#範例四邏輯迴歸的實際應用",
+    "href": "projects/2025-07-31-regression-sample/index.html#範例四邏輯迴歸的實際應用",
+    "title": "迴歸分析實例",
+    "section": "範例四:邏輯迴歸的實際應用",
+    "text": "範例四:邏輯迴歸的實際應用"
+  },
+  {
+    "objectID": "projects/2025-07-31-regression-sample/index.html#範例三kaggle-5050-家新創企業數據線性迴歸的實際應用",
+    "href": "projects/2025-07-31-regression-sample/index.html#範例三kaggle-5050-家新創企業數據線性迴歸的實際應用",
+    "title": "迴歸分析實例",
+    "section": "範例三：kaggle 5050 家新創企業數據，線性迴歸的實際應用",
+    "text": "範例三：kaggle 5050 家新創企業數據，線性迴歸的實際應用\n資料來源：https://www.kaggle.com/datasets/amineoumous/50-startups-data\n資料內容：50 家新創企業的資料，包括 「研發支出」、「管理」、「行銷支出」、「所在州」、「利潤」。前 3 列表示每家新創公司在研發、行銷和管理方面的支出；所在州列表示新創公司位於哪個州；最後一列表示新創公司的利潤。\n\n資料概述\n\n\n筆數：50，欄位數：5\n           R&D Spend  Administration  Marketing Spend         Profit\ncount      50.000000       50.000000        50.000000      50.000000\nmean    73721.615600   121344.639600    211025.097800  112012.639200\nstd     45902.256482    28017.802755    122290.310726   40306.180338\nmin         0.000000    51283.140000         0.000000   14681.400000\n25%     39936.370000   103730.875000    129300.132500   90138.902500\n50%     73051.080000   122699.795000    212716.240000  107978.190000\n75%    101602.800000   144842.180000    299469.085000  139765.977500\nmax    165349.200000   182645.560000    471784.100000  192261.830000\n\n\n\n\n探索分析(Exploratory Data Analysis, EDA)\n\n\n顯示／隱藏程式碼\n# Profit 分布\nplt.figure(figsize=(7, 4))\nsns.histplot(startups_df[\"Profit\"], bins=30, kde=True)\nplt.title(\"Profit 分布\")\nplt.show()\n\n# 各支出與 Profit 的關係（散點圖 + 相關係數熱力圖）\nfig, axes = plt.subplots(1, 3, figsize=(7, 4))\n\n# R&D Spend vs Profit\nsns.scatterplot(ax=axes[0], x=\"R&D Spend\", y=\"Profit\", data=startups_df)\naxes[0].set_title(\"R&D Spend 與 Profit 的關係\")\n\n# Marketing Spend vs Profit\nsns.scatterplot(ax=axes[1], x=\"Marketing Spend\", y=\"Profit\", data=startups_df)\naxes[1].set_title(\"Marketing Spend 與 Profit 的關係\")\n\n# Administration vs Profit\nsns.scatterplot(ax=axes[2], x=\"Administration\", y=\"Profit\", data=startups_df)\naxes[2].set_title(\"Administration 與 Profit 的關係\")\n\nplt.tight_layout()\nplt.show()\n# 初步觀察的趨勢（哪些支出可能影響大）\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n模型分析\n\n\n顯示／隱藏程式碼\n# 方法：多元線性迴歸（OLS）\n\n# 重要變數：影響大小 + 顯著性（可用顯著性標記圖）\n\n# 模型評估（R²、調整後 R²、RMSE）\n\n\n\n\n結論與建議"
   }
 ]
