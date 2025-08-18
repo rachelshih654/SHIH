@@ -21,11 +21,12 @@ import numpy as np
 from IPython.display import Markdown
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import seaborn as sns       
+import seaborn as sns
+import matplotlib.ticker as mtick
 
 # 設定中文字體
-plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimHei', 'Arial Unicode MS']
-plt.rcParams['axes.unicode_minus'] = False  # 解決負號顯示問題
+plt.rcParams["font.sans-serif"] = ["Microsoft JhengHei", "SimHei", "Arial Unicode MS"]
+plt.rcParams["axes.unicode_minus"] = False  # 解決負號顯示問題
 ```
 
 ## 範例一：線性迴歸概念及scikit-learn 實作
@@ -179,7 +180,12 @@ x = 1000
 sklearn_y = model.predict([[x]])
 formula_y = a + b * x
 
-print(f"預測 {x}kg 的動物最大奔跑速度，scikit-learn 預測值為 {sklearn_y[0].round(3)} km/h，公式計算得出的預測值為 {formula_y:.3f} km/h")
+print(
+    f"預測 {x}kg 的動物最大奔跑速度，\n"
+    f"scikit-learn 預測值為 {sklearn_y[0].round(3)} km/h，\n"
+    f"公式計算得出的預測值為 {formula_y:.3f} km/h"
+)
+
 ```
 
 
@@ -343,7 +349,7 @@ Markdown(df_pred.to_markdown(index=False))
 - **邏輯回歸預測值**：永遠介於 0~1，代表「Y=1 的機率」
 - **線性回歸預測值**：可以小於 0 或大於 1，沒有機率意義
 
-## 範例三：kaggle 5050 家新創企業數據，線性迴歸的實際應用
+## 範例三：kaggle 50 家新創企業數據，線性迴歸的實際應用
 
 資料來源：https://www.kaggle.com/datasets/amineoumous/50-startups-data
 
@@ -367,11 +373,10 @@ print(startups_df.describe())
 print("State 的類別資料統計")
 print(startups_df["State"].value_counts())
 
-# 轉成 one-hot encoding，改成0、1編碼
-startups_df_onehot = pd.get_dummies(startups_df, columns=["State"], drop_first=True, dtype=int)
+
 
 # 印出前五筆資料
-print(startups_df_onehot.head(5).to_markdown(index=False))
+print(startups_df.head(5).to_markdown(index=False))
 
 ```
 
@@ -380,11 +385,14 @@ print(startups_df_onehot.head(5).to_markdown(index=False))
 ```{python}
 # | echo: true
 
+# formatter: #,##0
+fmt = mtick.StrMethodFormatter("{x:,.0f}")
 
 # Profit 分布
 plt.figure(figsize=(7, 4))
-sns.histplot(startups_df["Profit"], bins=30, kde=True)
-plt.title("Profit 分布")
+ax = sns.histplot(startups_df["Profit"], bins=30, kde=True) 
+ax.set_title("Profit 分布")
+ax.xaxis.set_major_formatter(fmt)  # 設定 x 軸數字格式
 plt.show()
 
 # 各支出與 Profit 的關係（散點圖 + 相關係數熱力圖）
@@ -397,9 +405,10 @@ sns.scatterplot(
     y="Profit",
     data=startups_df,
     hue="State",
-    legend=False,
+    legend="full",   # 保留 legend
 )
 axes[0, 0].set_title("R&D Spend 與 Profit 的關係")
+axes[0, 0].legend_.remove()   # 把第一張圖的 legend 移掉
 
 # Marketing Spend vs Profit
 sns.scatterplot(
@@ -423,10 +432,19 @@ sns.scatterplot(
 )
 axes[1, 0].set_title("Administration 與 Profit 的關係")
 
-# 共用圖例，設定圖例位置
-handles, labels = axes[0, 0].get_legend_handles_labels()
-fig.legend(handles, labels, loc="upper right", bbox_to_anchor=(1.02, 1.0))
+# 把右下角的空白子圖清空
+axes[1, 1].axis("off")
 
+# 從第一個子圖拿 legend 資訊
+handles, labels = axes[0, 0].get_legend_handles_labels()
+axes[1, 1].legend(handles, labels, loc="center")  # 放在右下角空白處
+axes[1, 1].set_title("Legend", fontsize=10)       # 可選，加個標題
+
+
+# 設定每個子圖的 X, Y 軸格式
+for ax in axes.ravel():
+    ax.xaxis.set_major_formatter(fmt)
+    ax.yaxis.set_major_formatter(fmt)
 
 plt.tight_layout()
 plt.show()
@@ -454,23 +472,222 @@ plt.show()
 
 可以看出，R&D Spend 與 Profit 的關係最強，Administration 與 Profit 的關係最弱。
 
-### 模型分析    
+### 模型分析
+
+#### 簡單線性迴歸模型
+
+三個變數與 Profit 的關係，分別建立三個模型，繪製迴歸線，並計算 $R^2$。
 
 ```{python}
 # | echo: true
-# 方法：多元線性迴歸（OLS）
+from sklearn.linear_model import LinearRegression
 
-# 重要變數：影響大小 + 顯著性（可用顯著性標記圖）
+plt.style.use("ggplot")
 
-# 模型評估（R²、調整後 R²、RMSE）
+
+# 建立模型一 : R&D Spend 與 Profit 的迴歸模型
+model_1 = LinearRegression()
+model_1.fit(startups_df[["R&D Spend"]], startups_df["Profit"])
+print(f"R&D Spend 與 Profit 的迴歸模型: y={model_1.coef_[0]:.3f}x+{model_1.intercept_:.3f}")
+
+# 建立模型二 : Marketing Spend 與 Profit 的迴歸模型
+model_2 = LinearRegression()
+model_2.fit(startups_df[["Marketing Spend"]], startups_df["Profit"])
+print(f"Marketing Spend 與 Profit 的迴歸模型: y={model_2.coef_[0]:.3f}x+{model_2.intercept_:.3f}")
+
+
+# 建立模型三 : Administration 與 Profit 的迴歸模型
+model_3 = LinearRegression()
+model_3.fit(startups_df[["Administration"]], startups_df["Profit"])
+print(f"Administration 與 Profit 的迴歸模型: y={model_3.coef_[0]:.3f}x+{model_3.intercept_:.3f}")
+
+# 三個模型的R²
+r2_1 = model_1.score(startups_df[["R&D Spend"]], startups_df["Profit"])
+r2_2 = model_2.score(startups_df[["Marketing Spend"]], startups_df["Profit"])
+r2_3 = model_3.score(startups_df[["Administration"]], startups_df["Profit"])
+
+# 整理成 DataFrame（方便控制格式）
+r2__simple_df = pd.DataFrame({
+    "變數": ["R&D Spend", "Marketing Spend", "Administration"],
+    "R²": [r2_1, r2_2, r2_3]
+})
+
+
+# 繪製三種模型的迴歸線
+fig, axes = plt.subplots(2, 2, figsize=(7, 4))
+axes[0, 0].scatter(startups_df["R&D Spend"], startups_df["Profit"], color="gray")
+axes[0, 0].plot(startups_df["R&D Spend"], model_1.predict(startups_df[["R&D Spend"]]), color="red")
+axes[0, 0].set_title("R&D Spend 與 Profit 的迴歸模型")
+
+axes[0, 1].scatter(startups_df["Marketing Spend"], startups_df["Profit"], color="gray")
+axes[0, 1].plot(startups_df["Marketing Spend"], model_2.predict(startups_df[["Marketing Spend"]]), color="red")
+axes[0, 1].set_title("Marketing Spend 與 Profit 的迴歸模型")
+
+axes[1, 0].scatter(startups_df["Administration"], startups_df["Profit"], color="gray")
+axes[1, 0].plot(startups_df["Administration"], model_3.predict(startups_df[["Administration"]]), color="red")
+axes[1, 0].set_title("Administration 與 Profit 的迴歸模型")
+
+# R² 表格
+axes[1, 1].axis("off")
+table = axes[1, 1].table(
+    cellText=r2__simple_df.round(3).values,  # 保留三位小數
+    colLabels=r2__simple_df.columns,
+    cellLoc="center",
+    loc="center"
+)
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.scale(1.2, 1.2)  # 放大表格
+
+# 設定每個子圖的 X, Y 軸格式
+for ax in axes.ravel():
+    ax.xaxis.set_major_formatter(fmt)
+    ax.yaxis.set_major_formatter(fmt) 
+
+plt.tight_layout()
+plt.show()
+
 ```
+
+
+$R^2$ 值越接近 1，表示模型越能解釋變數的變化。
+
+如相關係數結果，R&D Spend 與 Profit 的相關係數為 0.975，表示兩者之間有很強的正相關。
+
+如迴歸模型結果，R&D Spend 與 Profit 的 R² 值為 0.93，表示模型能解釋 93% 的 Profit 變化。
+
+因此，R&D Spend 是影響 Profit 最重要的變數。
+
+#### 多元線性迴歸模型
+1. 考慮 R&D Spend 和 Marketing Spend 是否共線性
+    - 共線性：兩個變數之間有很高的相關性，會導致模型不穩定，因此需要刪除其中一個變數。
+    - 透過 VIF (Variance Inflation Factor) 來檢測共線性
+        - VIF < 5 → 通常沒問題，可以放心用
+        - 5 ≤ VIF < 10 → 有點高，可能有共線性
+        - VIF ≥ 10 → 高度共線性，這個變數可能要刪掉或重新建模
+
+
+<b style="color: red;">若只用來預測，VIF 值可以不用太在意，但若要解釋變數，則需要考慮 VIF 值。</b>
+
+
+2. 將 State 類別變數轉成 one-hot encoding，改成0、1編碼
+所謂 one-hot encoding，就是將類別變數轉成0、1編碼，例如：
+- State 有 3 個類別：California, New York, Florida
+- 轉成 one-hot encoding 後，變成 3 個變數：California, New York, Florida
+- 如果 State 是 California，則 California 為 1，其他為 0
+- 如果 State 是 New York，則 New York 為 1，其他為 0
+- 如果 State 是 Florida，則 Florida 為 1，其他為 0
+
+3. 建立多元線性迴歸模型
+
+
+```{python}
+# | echo: true
+
+# 計算 VIF 值
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+
+X = startups_df[["R&D Spend", "Marketing Spend", "Administration"]]
+vif_data = pd.DataFrame()
+vif_data["變數"] = X.columns
+vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+
+print(vif_data)
+```
+
+VIF 值都小於10，保留三個變數。
+
+```{python}
+
+# 轉成 one-hot encoding，改成0、1編碼
+startups_df_onehot = pd.get_dummies(
+    startups_df, columns=["State"], drop_first=True, dtype=int
+)
+
+# 建立模型四 : 多元線性迴歸模型(加入 State 的影響)
+model_4 = LinearRegression()
+model_4.fit(
+    startups_df_onehot[
+        ["R&D Spend", "Marketing Spend", "State_Florida", "State_New York"]
+    ],
+    startups_df_onehot["Profit"],
+)
+
+# 模型評估（R²）
+r2_4 = model_4.score(
+    startups_df_onehot[
+        ["R&D Spend", "Marketing Spend", "State_Florida", "State_New York"]
+    ],
+    startups_df_onehot["Profit"],
+)
+print(f"多元線性迴歸模型: R²={r2_4:.3f}")
+
+# 模型公式
+print(
+    f"模型公式:\n"
+    + f"Profit = {model_4.intercept_:.3f} + {model_4.coef_[0]:.3f} * R&D Spend"
+    + f" + {model_4.coef_[1]:.3f} * Marketing Spend"
+    + f" + {model_4.coef_[2]:.3f} * State_Florida"
+    + f" + {model_4.coef_[3]:.3f} * State_New York"
+)
+
+```
+
+多元迴歸模型，$R^2$ 值為 0.95，比簡單線性迴歸模型(R&D Spend 解釋 Profit) 0.947 還高一些，
+但是多元迴歸模型較複雜，不好解釋，因此這裡簡單線性迴歸模型較好。
+
+#### 補充 : 簡單線性迴歸的 Gradient Descent 演算法
+
+```{python}
+# | echo: true
+# Gradient Descent 演算法
+from sklearn.linear_model import SGDRegressor
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+
+# 建立模型五 : 簡單線性迴歸模型(Gradient Descent 演算法)
+model_5 = make_pipeline(
+    StandardScaler(), SGDRegressor(max_iter=1000, tol=1e-3, random_state=42)
+)
+
+model_5.fit(startups_df[["R&D Spend"]], startups_df["Profit"])
+reg = model_5.named_steps["sgdregressor"]  # 取出最後一層回歸器
+
+# 模型公式
+scaler = model_5.named_steps["standardscaler"]
+coef = reg.coef_[0] / scaler.scale_[0]
+intercept = reg.intercept_[0] - coef * scaler.mean_[0]
+
+print(f"模型公式: Profit = {intercept:.3f} + {coef:.3f} * R&D Spend")
+
+```
+
+用 Gradient Descent 演算法，可以得到與簡單線性迴歸模型相似的結果。
+此算法是用在資料量很大時，用來加速計算，或是用來解決非線性問題時的解法。
+
 
 ### 結論與建議
 
+此範例中，先用資料概述了解資料的基本資訊，資料有50筆，有5個變數，並且無缺失值。
+另外 State 欄位是類別變數，有3個區域，是New York、California、Florida，分別有17、17、16筆資料。
+
+接著用探索分析初步了解 Profit 利潤 的分布，以及用散點圖觀察三個變數，R&D Spend 研發支出、Marketing Spend 行銷支出、Administration 管理支出，與 Profit 利潤 的關係，並且用顏色區分 State 區域。
+顏色沒有明顯的區分，但可以觀察到 研發支出 與 利潤 的關係非常強。
+另外，用相關係數熱力圖，可以看出 研發支出 與 利潤 的相關係數為 0.97，表示兩者之間有很強的正相關。
+而且 研發支出 與 行銷支出 的相關係數為 0.72，表示兩者之間也有正相關，可能需要考慮其共線性。
+
+接著建立簡單線性迴歸模型，並且計算 $R^2$ 值，可以看出 研發支出 與 利潤 的 $R^2$ 值為 0.947，表示模型能解釋 94.7% 的利潤變化。
+
+接著建立多元線性迴歸模型，並且計算 $R^2$ 值，可以看出 研發支出、行銷支出、State 的 $R^2$ 值為 0.95，表示模型能解釋 95% 的利潤變化。
+
+但是兩者的 $R^2$ 值相差不大，而且多元線性迴歸模型較複雜，不好解釋，因此這裡簡單線性迴歸模型較好。
+所以，建議用簡單線性迴歸模型，用 研發支出 來解釋 利潤 的變化。
+
+<b style="color: red;">這裡重點在於迴歸模型的建立，並且只考慮模型的解釋力。若要評估模型的實用性，可以拆分訓練集與測試集，計算模型預測力。</b>
 
 
 
-## 範例四:邏輯迴歸的實際應用
 
 
 
